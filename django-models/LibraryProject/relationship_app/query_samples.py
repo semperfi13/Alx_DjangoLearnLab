@@ -20,6 +20,7 @@ librarian.save()
 
 author = Author.objects.get(name="Ali Ben")
 books = Book.objects.get(author=author)
+"Author.objects.get(name=author_name)", "objects.filter(author=author)"
 
 
 # List all books in a library.
@@ -31,3 +32,4 @@ all_books = library.books.all()
 # Retrieve the librarian for a library.
 
 librarian = Librarian.objects.get(library=library)
+" Librarian.objects.get(library=library_name )"
