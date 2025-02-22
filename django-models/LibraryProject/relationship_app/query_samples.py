@@ -25,6 +25,7 @@ books = Book.objects.get(author=author)
 # List all books in a library.
 
 library = Library.objects.get(name="Semperfi Library")
+"Library.objects.get(name=library_name)"
 all_books = library.books.all()
 
 # Retrieve the librarian for a library.
