@@ -17,10 +17,44 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from relationship_app.views import LibraryDetailView
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LogoutView
+from relationship_app.views import LibraryDetailView, LibrariesView
+from relationship_app.views import RegisterView
+from home.views import index
+
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("library/<int:pk>/", LibraryDetailView.as_view()),
-    path("books/", include("relationship_app.urls")),
+    path(
+        "admin/",
+        admin.site.urls,
+    ),
+    path(
+        "libraries/",
+        LibrariesView.as_view(),
+    ),
+    path(
+        "login/",
+        LoginView.as_view(template_name="relationship_app/login.html"),
+        name="login",
+    ),
+    path(
+        "logout/",
+        LogoutView.as_view(),
+        name="logout",
+    ),
+    path(
+        "register/",
+        RegisterView.as_view(),
+        name="register",
+    ),
+    path(
+        "library/<int:pk>/",
+        LibraryDetailView.as_view(),
+    ),
+    path(
+        "books/",
+        include("relationship_app.urls"),
+    ),
+    path("", include("home.urls")),
 ]

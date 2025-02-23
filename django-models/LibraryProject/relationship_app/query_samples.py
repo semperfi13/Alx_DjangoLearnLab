@@ -10,7 +10,8 @@ author.save()
 book = Book.objects.create(title="1984", author=author)
 book.save()
 
-library = Library.objects.create(name="Semperfi Library", books=book)
+library = Library.objects.create(name="Semperfi Library")
+library.books.add(book)
 library.save()
 
 librarian = Librarian.objects.create(name="Karim Adeyemi", library=library)
@@ -19,6 +20,7 @@ librarian.save()
 # Query all books by a specific author.
 
 author = Author.objects.get(name="Ali Ben")
+
 books = Book.objects.get(author=author)
 "Author.objects.get(name=author_name)", "objects.filter(author=author)"
 
@@ -32,4 +34,4 @@ all_books = library.books.all()
 # Retrieve the librarian for a library.
 
 librarian = Librarian.objects.get(library=library)
-" Librarian.objects.get(library=library_name )"
+"Librarian.objects.get(library=library_name )"
