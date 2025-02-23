@@ -1,18 +1,17 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from .models import Book, Library
 from django.views.generic import TemplateView
 
 
 def bookView(request):
-    template_name = "relationship_app/book_list.html"
+    template_name = "relationship_app/list_books.html"
     books = Book.objects.all()
     context = {"books": books}
 
     return render(request, template_name, context)
 
 
-class BookView(TemplateView):
+class LibraryView(TemplateView):
 
     def get(self, request):
         template_name = "relationship_app/library_detail.html"
