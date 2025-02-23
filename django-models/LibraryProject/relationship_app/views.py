@@ -6,8 +6,10 @@ from django.views.generic import TemplateView
 
 def bookView(request):
     template_name = "relationship_app/book_list.html"
+    books = Book.objects.all()
+    context = {"books": books}
 
-    return HttpResponse("Hello", template_name)
+    return render(request, template_name, context)
 
 
 class BookView(TemplateView):
