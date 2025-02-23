@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from django.utils import timezone
 
 
-def bookView(request):
+def list_books(request):
     template_name = "relationship_app/list_books.html"
     books = Book.objects.all()
     context = {"books": books}
