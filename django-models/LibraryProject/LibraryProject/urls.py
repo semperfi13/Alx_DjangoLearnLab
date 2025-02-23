@@ -21,6 +21,8 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
 from relationship_app.views import LibraryDetailView, LibrariesView
 from relationship_app.views import RegisterView
+from relationship_app import views
+
 from home.views import index
 
 
@@ -43,11 +45,7 @@ urlpatterns = [
         LogoutView.as_view(template_name="relationship_app/logout.html"),
         name="logout",
     ),
-    path(
-        "register/",
-        RegisterView.as_view(),
-        name="register",
-    ),
+    path("register/", views.register, name="register"),
     path(
         "library/<int:pk>/",
         LibraryDetailView.as_view(),

@@ -8,7 +8,7 @@ urlpatterns = [
     path("", views.list_books),
     path("", views.LibraryDetailView.as_view()),
     path("", views.LibrariesView.as_view()),
-    path("", views.RegisterView.as_view()),
+    path("", views.register),
     path(
         "",
         LoginView.as_view(template_name="relationship_app/login.html"),
