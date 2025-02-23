@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth import login
+from django.contrib.auth import logout
 
 
 def list_books(request):
@@ -33,3 +34,8 @@ class RegisterView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy("login")
     template_name = "relationship_app/register.html"
+
+
+def logout_view(request):
+    logout(request)
+    # Redirect to a success page.
