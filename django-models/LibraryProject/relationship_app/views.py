@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from .models import Book
 from .models import Library
-
+from django.views.generic import DetailView
 from django.views.generic import TemplateView
+from django.utils import timezone
 
 
 def bookView(request):
@@ -13,10 +14,7 @@ def bookView(request):
     return render(request, template_name, context)
 
 
-class LibraryView(TemplateView):
-
-    def get(self, request):
-        template_name = "relationship_app/library_detail.html"
-        library = Library.objects.get(id="1")
-        context = {"library": library}
-        return render(request, template_name, context)
+class LibraryDetailView(DetailView):
+    model = Library
+    template_name = "relationship_app/library_detail.html"
+    context_object_name = "library"

@@ -17,10 +17,10 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from relationship_app.views import LibraryView
+from relationship_app.views import LibraryDetailView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("library/", LibraryView.as_view()),
+    path("library/<int:pk>/", LibraryDetailView.as_view()),
     path("books/", include("relationship_app.urls")),
 ]
