@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.contrib.auth.models import User
+from django.dispatch import receiver
 
 
 class Author(models.Model):
@@ -15,6 +18,13 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title + " " + self.author.name
+
+    class Meta:
+        permissions = [
+            ("can_add_book", "can_add_book"),
+            ("can_change_book", "can_change_book"),
+            ("can_delete_book", "can_delete_book"),
+        ]
 
 
 class Library(models.Model):
@@ -33,3 +43,31 @@ class Librarian(models.Model):
 
     def __str__(self):
         return self.name + " " + self.library.name
+
+
+class UserProfile(models.Model):
+    USER_ROLES = (
+        ("Admin", "Admin"),
+        ("Librarian", "Librarian"),
+        ("Member", "Member"),
+    )
+
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="userprofile"
+    )
+    role = models.CharField(max_length=255, choices=USER_ROLES)
+
+    def __str__(self):
+        return self.user.username + " " + self.role
+
+    def create_profile(sender, instance, created, **kwargs):
+        if created:
+            UserProfile.objects.create(user=instance)
+
+    post_save.connect(create_profile, sender=User)
+
+    def update_profile(sender, instance, created, **kwargs):
+        if created is False:
+            instance.userprofile.save()
+
+    post_save.connect(update_profile, sender=User)
