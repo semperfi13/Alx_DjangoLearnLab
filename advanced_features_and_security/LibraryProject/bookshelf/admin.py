@@ -9,7 +9,7 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ("title", "author")
 
 
-class UserAdmin(BaseUserAdmin):
+class CustomUserAdmin(BaseUserAdmin):
     # Custom forms
     form = UserChangeForm
     add_form = UserCreationForm
@@ -63,4 +63,4 @@ class UserAdmin(BaseUserAdmin):
 
 # Register models in Django admin
 admin.site.register(Book, BookAdmin)
-admin.site.register(CustomUser, UserAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)
