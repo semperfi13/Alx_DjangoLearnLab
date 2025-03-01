@@ -19,8 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
-from relationship_app.views import LibraryDetailView, LibrariesView
-from relationship_app import views
+
 
 from home import views as homeIndex
 
@@ -31,10 +30,6 @@ urlpatterns = [
         admin.site.urls,
     ),
     path(
-        "libraries/",
-        LibrariesView.as_view(),
-    ),
-    path(
         "login/",
         LoginView.as_view(template_name="relationship_app/login.html"),
         name="login",
@@ -43,11 +38,6 @@ urlpatterns = [
         "logout/",
         LogoutView.as_view(template_name="relationship_app/logout.html"),
         name="logout",
-    ),
-    path("register/", views.register, name="register"),
-    path(
-        "library/<int:pk>/",
-        LibraryDetailView.as_view(),
     ),
     path(
         "books/",

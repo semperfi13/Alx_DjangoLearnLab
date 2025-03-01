@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Book
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from bookshelf.models import User
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from .models import Book, CustomUser
 
 
 class BookAdmin(admin.ModelAdmin):
@@ -10,33 +10,57 @@ class BookAdmin(admin.ModelAdmin):
 
 
 class UserAdmin(BaseUserAdmin):
-    # The forms to add and change user instances
+    # Custom forms
+    form = UserChangeForm
+    add_form = UserCreationForm
 
-    # The fields to be used in displaying the User model.
-    # These override the definitions on the base UserAdmin
-    # that reference specific fields on auth.User.
-    list_display = ["email", "date_of_birth"]
-    list_filter = ["email"]
-    fieldsets = [
-        (None, {"fields": ["email", "password"]}),
-        ("Personal info", {"fields": ["date_of_birth"]}),
-        ("Permissions", {"fields": ["is_admin"]}),
+    # Fields to display in the user list
+    list_display = [
+        "email",
+        "identifier",
+        "phone_number",
+        "date_of_birth",
+        "is_staff",
+        "is_superuser",
     ]
-    # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
-    # overrides get_fieldsets to use this attribute when creating a user.
+    list_filter = ["is_staff", "is_superuser", "email"]
+
+    fieldsets = [
+        (None, {"fields": ["email", "identifier", "password"]}),
+        (
+            "Personal Info",
+            {"fields": ["date_of_birth", "phone_number", "profile_photo"]},
+        ),
+        (
+            "Permissions",
+            {"fields": ["is_staff", "is_superuser", "groups", "user_permissions"]},
+        ),
+    ]
+
+    # Fields used when adding a user
     add_fieldsets = [
         (
             None,
             {
                 "classes": ["wide"],
-                "fields": ["email", "date_of_birth", "password1", "password2"],
+                "fields": [
+                    "email",
+                    "identifier",
+                    "date_of_birth",
+                    "phone_number",
+                    "profile_photo",
+                    "password1",
+                    "password2",
+                ],
             },
         ),
     ]
-    search_fields = ["email"]
+
+    search_fields = ["email", "identifier", "phone_number"]
     ordering = ["email"]
-    filter_horizontal = []
+    filter_horizontal = ["groups", "user_permissions"]
 
 
+# Register models in Django admin
 admin.site.register(Book, BookAdmin)
-admin.site.register(User, UserAdmin)
+admin.site.register(CustomUser, UserAdmin)
