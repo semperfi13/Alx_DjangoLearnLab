@@ -80,8 +80,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "alx_book_store",
-        "USER": "root",
-        "PASSWORD": "root",
+        "USER": "adamou",
+        "PASSWORD": "admin",
         "HOST": "localhost",
         "PORT": "3306",
     }
