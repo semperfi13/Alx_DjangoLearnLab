@@ -11,11 +11,11 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 
 class BookSerializer(serializers.ModelSerializer):
-    author = AuthorSerializer(many=True, read_only=True)
+    # author = AuthorSerializer(many=True, read_only=True)
 
     class Meta:
         model = Book
-        fields = ["title", "publication_year", "author"]
+        fields = ["title", "publication_year"]
 
     def validate(self, data):
         d = datetime.date.today()
