@@ -18,7 +18,9 @@ class BookSerializer(serializers.ModelSerializer):
         fields = ["title", "publication_year", "author"]
 
     def validate(self, data):
-        if data["publication_year"] > datetime.date.year:
+        d = datetime.date.today()
+        year = d.strftime("%Y")
+        if data["publication_year"] > int(year):
             raise serializers.ValidationError("Date must not bet in the future.")
 
         return data
