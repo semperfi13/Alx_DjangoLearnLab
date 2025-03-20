@@ -27,7 +27,7 @@ class CustomBookListView(generics.ListAPIView):
         filters.OrderingFilter,
         filters.SearchFilter,
     ]
-    search_fields = ["title", "author"]
+    search_fields = ["title"]
     ordering_fields = ["title", "publication_year"]
     ordering = ["title"]
 
