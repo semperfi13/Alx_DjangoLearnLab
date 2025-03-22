@@ -9,6 +9,7 @@ client.post("/books/", {"title": "new idea"}, format="json")
 
 
 class BokkTestCase(APITestCase, URLPatternsTestCase):
+
     urlpatterns = [
         path("api/", include("api.urls")),
     ]
@@ -18,6 +19,7 @@ class BokkTestCase(APITestCase, URLPatternsTestCase):
         Book.objects.create(title="CAT", publication_year=2024)
 
     def test_book(self):
+        self.client.login(username="lauren", password="secret")
         url = reverse("books")
         response = self.client.get(url, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)

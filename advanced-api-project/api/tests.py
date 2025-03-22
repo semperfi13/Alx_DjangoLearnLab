@@ -20,5 +20,6 @@ class BokkTestCase(APITestCase, URLPatternsTestCase):
     def test_book(self):
         url = reverse("books")
         response = self.client.get(url, format="json")
+        self.client.login(username="lauren", password="secret")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 2)
