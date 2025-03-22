@@ -1,0 +1,15 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+Hi welcome!!!.
+<p>Name : {{ user }}</p>
+<p>Email : {{ user.email }}</p>
+<form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Log Out</button>
+</form>
+{% endif %}
+{% endblock %}
