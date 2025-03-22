@@ -3,7 +3,7 @@ from api.models import Book
 
 
 # Create your tests here.
-class BokkTestCase(TestCase):
+class APITestCase(TestCase):
     def setUp(self):
         Book.objects.create(title="LION", publication_year=1980)
         Book.objects.create(title="CAT", publication_year=2024)
