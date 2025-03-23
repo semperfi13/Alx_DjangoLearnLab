@@ -1,0 +1,34 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Posts{% endblock %}
+
+{% block content %}
+<a href="{% url 'posts-new' %}">
+    <button>Add new post</button>
+</a>
+<br />
+<br />
+{% for post in object_list %}
+<li>{{ post.id }}</li>
+<h1>{{ post.title|safe }}</h1>
+<hr>
+<p>{{ post.content|safe }}</p>
+<li>{{ post.published_date|date }}</li>
+<li>Author {{ post.author.username|safe }}</li>
+
+<a href="{% url 'posts-details' post.id %}">
+    <button>Voir details</button>
+</a>
+<a href="{% url 'posts-edit' post.id %}">
+    <button>Modifier</button>
+</a>
+<a href="{% url 'posts-delete' post.id %}">
+    <button>Supprimer</button>
+</a>
+<br />
+<br />
+
+
+{% endfor %}
+
+{% endblock %}

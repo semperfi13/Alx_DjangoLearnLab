@@ -1,4 +1,10 @@
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import (
+    CreateView,
+    UpdateView,
+    ListView,
+    DetailView,
+    DeleteView,
+)
 from .forms import UserCreationForm, UpdateUserForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import logout
@@ -6,6 +12,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
+from .models import Post
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
 # Create your views here.
@@ -47,3 +55,43 @@ class UpdateProfileView(UpdateView):
     template_name = "blog/update_profile.html"
     fields = ["first_name", "last_name", "username", "email"]
     success_url = reverse_lazy("profile")
+
+
+# Use Django’s class-based views to handle CRUD operations:
+
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    fields = ["title", "content"]
+
+
+class PostListView(ListView):
+    model = Post
+    queryset = Post.objects.all()
+    paginate_by = 10
+    template_name = "blog/post_list.html"
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "blog/post_details.html"
+
+
+class PostEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Post
+    fields = ["title", "content"]
+    template_name = "blog/post_update_form.html"
+
+    def test_func(self):
+        return self.get_object().author == self.request.user
+
+    def get_success_url(self):
+        return reverse_lazy("posts-details", args=[str(self.id)])
+
+
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Post
+    success_url = reverse_lazy("posts")
+
+    def test_func(self):
+        return self.get_object().author == self.request.user

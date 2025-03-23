@@ -1,0 +1,14 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Posts{% endblock %}
+
+{% block content %}
+<h1>{{ object.title|safe }}</h1>
+<hr>
+<p>{{ object.content|safe }}</p>
+<li>{{ object.published_date|date }}</li>
+<li>Author {{ object.author.username|safe }}</li>
+<a href="{% url 'posts-edit' object.id %}">
+    <button>Modifier</button>
+</a>
+{% endblock %}
