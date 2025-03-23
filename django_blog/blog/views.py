@@ -95,3 +95,18 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         return self.get_object().author == self.request.user
+
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    pass
+
+
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    def test_func(self):
+        return self.get_object().author == self.request.user
+
+
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+
+    def test_func(self):
+        return self.get_object().author == self.request.user
