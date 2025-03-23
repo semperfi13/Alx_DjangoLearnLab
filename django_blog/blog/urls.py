@@ -10,6 +10,9 @@ from .views import (
     PostListView,
     PostEditView,
     PostDeleteView,
+    CommentCreateView,
+    CommentUpdateView,
+    CommentDeleteView,
     PostCreateView,
 )
 
@@ -22,9 +25,16 @@ urlpatterns = [
     ),
     path("", TemplateView.as_view(template_name="blog/home.html"), name="home"),
     path("login/", LoginView.as_view(template_name="blog/login.html"), name="login"),
+    # CRUD for posts
     path("posts/", PostListView.as_view(), name="posts"),
     path("post/new/", PostCreateView.as_view(), name="posts-new"),
     path("post/<int:pk>", PostDetailView.as_view(), name="posts-details"),
     path("post/<int:pk>/update/", PostEditView.as_view(), name="posts-edit"),
     path("post/<int:pk>/delete/", PostDeleteView.as_view(), name="posts-delete"),
+    # CRUD for comments
+    path(
+        "post/<int:pk>/comment/new", CommentCreateView.as_view(), name="comment-update"
+    ),
+    path("comment/<int:pk>/update", CommentUpdateView.as_view(), name="comment-update"),
+    path("comment/<int:pk>/delete", CommentDeleteView.as_view(), name="comment-delete"),
 ]
