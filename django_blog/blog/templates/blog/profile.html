@@ -4,12 +4,22 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-Hi welcome!!!.
-<p>Name : {{ user }}</p>
-<p>Email : {{ user.email }}</p>
+<h2>Hi, welcome!!!</h2>
+<p><strong>User ID:</strong> {{ user.id }}</p>
+<p><strong>First name:</strong> {{ user.first_name }}</p>
+<p><strong>Last name:</strong> {{ user.last_name }}</p>
+<p><strong>Username:</strong> {{ user.username }}</p>
+<p><strong>Email:</strong> {{ user.email }}</p>
+
+<a href="{% url 'profile-update' user.id %}">
+    <button>Update Profile</button>
+</a>
+
 <form action="{% url 'logout' %}" method="post">
     {% csrf_token %}
     <button type="submit">Log Out</button>
 </form>
+{% else %}
+<p>You are not logged in.</p>
 {% endif %}
 {% endblock %}
