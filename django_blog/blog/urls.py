@@ -22,7 +22,6 @@ urlpatterns = [
     ),
     path("", TemplateView.as_view(template_name="blog/home.html"), name="home"),
     path("login/", LoginView.as_view(template_name="blog/login.html"), name="login"),
-    # crud
     path("posts/", PostListView.as_view(), name="posts"),
     path("post/new/", PostCreateView.as_view(), name="posts-new"),
     path("post/<int:pk>", PostDetailView.as_view(), name="posts-details"),

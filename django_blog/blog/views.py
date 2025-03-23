@@ -86,7 +86,7 @@ class PostEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return self.get_object().author == self.request.user
 
     def get_success_url(self):
-        return reverse_lazy("posts-details", args=[str(self.id)])
+        return reverse_lazy("posts-details", args=[self.get_object().id])
 
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

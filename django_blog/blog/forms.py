@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .models import Comment
 
 
 class UserCreationForm(UserCreationForm):
@@ -49,3 +50,9 @@ class UpdateUserForm(forms.ModelForm):
             user.save()
 
         return user
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["content"]
