@@ -24,8 +24,8 @@ urlpatterns = [
     path("login/", LoginView.as_view(template_name="blog/login.html"), name="login"),
     # crud
     path("posts/", PostListView.as_view(), name="posts"),
-    path("post/new", PostCreateView.as_view(), name="posts-new"),
+    path("post/new/", PostCreateView.as_view(), name="posts-new"),
     path("post/<int:pk>", PostDetailView.as_view(), name="posts-details"),
     path("post/<int:pk>/update/", PostEditView.as_view(), name="posts-edit"),
-    path("posts/<int:pk>/delete/", PostDeleteView.as_view(), name="posts-delete"),
+    path("post/<int:pk>/delete/", PostDeleteView.as_view(), name="posts-delete"),
 ]
