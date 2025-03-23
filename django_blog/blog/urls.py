@@ -33,7 +33,9 @@ urlpatterns = [
     path("post/<int:pk>/delete/", PostDeleteView.as_view(), name="posts-delete"),
     # CRUD for comments
     path(
-        "post/<int:pk>/comment/new/", CommentCreateView.as_view(), name="comment-update"
+        "post/<int:pk>/comments/new/",
+        CommentCreateView.as_view(),
+        name="comment-update",
     ),
     path(
         "comment/<int:pk>/update/", CommentUpdateView.as_view(), name="comment-update"
