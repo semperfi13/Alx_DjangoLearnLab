@@ -21,6 +21,11 @@
             </ul>
         </nav>
     </header>
+    <form method="GET" action="{% url 'search_posts' %}">
+        <input type="text" name="q" placeholder="Rechercher un article...">
+        <button type="submit">Rechercher</button>
+    </form>
+
 
     <div class="content">
         {% block content %}

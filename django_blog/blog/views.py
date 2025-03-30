@@ -14,6 +14,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from .models import Post
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db.models import Q
 
 
 # Create your views here.
@@ -110,3 +111,28 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         return self.get_object().author == self.request.user
+
+
+def search_posts(request):
+    query = request.GET.get("q")
+    results = []
+
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query)
+            | Q(content__icontains=query)
+            | Q(tags__name__icontains=query)
+        ).distinct()
+
+    return render(
+        request, "blog/search_results.html", {"results": results, "query": query}
+    )
+
+
+from taggit.models import Tag
+
+
+def posts_by_tag(request, tag_slug):
+    tag = Tag.objects.get(slug=tag_slug)
+    posts = Post.objects.filter(tags__in=[tag])
+    return render(request, "blog/posts_by_tag.html", {"tag": tag, "posts": posts})

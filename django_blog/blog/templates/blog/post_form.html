@@ -4,6 +4,10 @@
 
 {% block content %}
 <h2>Add new post</h2>
+<label for="id_tags">Tags:</label>
+<input type="text" name="tags" id="id_tags" value="{{ form.tags.value|default_if_none:'' }}"
+    placeholder="Séparez les tags par des virgules">
+
 <form method="post">
     {% csrf_token %}
     {{ form }}
