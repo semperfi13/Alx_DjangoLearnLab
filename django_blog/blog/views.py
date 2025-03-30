@@ -132,7 +132,16 @@ def search_posts(request):
 from taggit.models import Tag
 
 
-def posts_by_tag(request, tag_slug):
-    tag = Tag.objects.get(slug=tag_slug)
-    posts = Post.objects.filter(tags__in=[tag])
-    return render(request, "blog/posts_by_tag.html", {"tag": tag, "posts": posts})
+class PostByTagListView(ListView):
+    model = Post
+    template_name = "blog/posts_by_tag.html"
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        self.tag = get_object_or_404(Tag, slug=self.kwargs["tag_slug"])
+        return Post.objects.filter(tags=self.tag)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["tag"] = self.tag  # Ajouter le tag au contexte pour l'affichage
+        return context
