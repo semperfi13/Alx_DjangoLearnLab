@@ -6,6 +6,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 from django.contrib.auth.models import User
 from .serializers import UserRegistrationSerializer
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import get_user_model
 
 
 # Create your views here.
@@ -30,3 +32,21 @@ class LogoutAPIView(APIView):
     def post(self, request):
         request.user.auth_token.delete()
         return Response({"message": "Déconnexion réussie."}, status=200)
+
+
+class FollowUserAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, user_id):
+        user_to_follow = get_user_model().objects.get(id=user_id)
+        request.user.following.add(user_to_follow)
+        return Response({"message": f"You are now following {user_to_follow.username}"})
+
+
+class UnfollowUserAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, user_id):
+        user_to_unfollow = get_user_model().objects.get(id=user_id)
+        request.user.following.remove(user_to_unfollow)
+        return Response({"message": f"You have unfollowed {user_to_unfollow.username}"})

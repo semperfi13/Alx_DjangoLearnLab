@@ -41,12 +41,14 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     email = models.EmailField(verbose_name="email address", max_length=255, unique=True)
+    following = models.ManyToManyField(
+        "self", symmetrical=False, related_name="followers"
+    )
     date_of_birth = models.DateField()
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     bio = models.TextField()
     profile_picture = models.ImageField()
-    followers = models.ManyToManyField("self", symmetrical=False)
 
     objects = CustomUserManager()
 
