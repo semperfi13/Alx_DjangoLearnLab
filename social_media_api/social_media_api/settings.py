@@ -11,6 +11,37 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from pathlib import Path
+import dj_database_url
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# SECURITY
+DEBUG = False
+ALLOWED_HOSTS = ["social-media.com", "api.social-media.com"]
+
+# Security Settings
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = "DENY"
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_SSL_REDIRECT = True  # Enable only if using HTTPS
+
+# DATABASE
+DATABASES = {"default": dj_database_url.config(default=os.getenv("DATABASE_URL"))}
+
+# Static & Media Files
+STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_ROOT = BASE_DIR / "media"
+
+# CORS Configuration
+CORS_ALLOWED_ORIGINS = [
+    "https://social-media.com",
+]
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
