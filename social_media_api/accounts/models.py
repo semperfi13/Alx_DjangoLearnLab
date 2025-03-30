@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from django.contrib.auth.models import BaseUserManager, AbstractUser
 from rest_framework.authtoken.models import Token
 from django.conf import settings
 from django.db.models.signals import post_save
@@ -39,13 +39,13 @@ class CustomUserManager(BaseUserManager):
         return user
 
 
-class CustomUser(AbstractBaseUser):
+class CustomUser(AbstractUser):
     email = models.EmailField(verbose_name="email address", max_length=255, unique=True)
     date_of_birth = models.DateField()
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     bio = models.TextField()
-    profile_picture = models.FileField()
+    profile_picture = models.ImageField()
     followers = models.ManyToManyField("self", symmetrical=False)
 
     objects = CustomUserManager()
