@@ -3,11 +3,13 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import generics
 from rest_framework import status
 from django.contrib.auth.models import User
 from .serializers import UserRegistrationSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
 from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
@@ -34,19 +36,44 @@ class LogoutAPIView(APIView):
         return Response({"message": "Déconnexion réussie."}, status=200)
 
 
-class FollowUserAPIView(APIView):
+CustomUser = get_user_model()
+
+
+class FollowUserAPIView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, user_id):
-        user_to_follow = get_user_model().objects.get(id=user_id)
+        try:
+            user_to_follow = CustomUser.objects.get(id=user_id)
+        except CustomUser.DoesNotExist:
+            return Response(
+                {"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Add the user_to_follow to the authenticated user's following list
         request.user.following.add(user_to_follow)
-        return Response({"message": f"You are now following {user_to_follow.username}"})
+
+        return Response(
+            {"message": f"You are now following {user_to_follow.username}"},
+            status=status.HTTP_200_OK,
+        )
 
 
-class UnfollowUserAPIView(APIView):
+class UnfollowUserAPIView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, user_id):
-        user_to_unfollow = get_user_model().objects.get(id=user_id)
+        try:
+            user_to_unfollow = CustomUser.objects.get(id=user_id)
+        except CustomUser.DoesNotExist:
+            return Response(
+                {"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Remove the user_to_unfollow from the authenticated user's following list
         request.user.following.remove(user_to_unfollow)
-        return Response({"message": f"You have unfollowed {user_to_unfollow.username}"})
+
+        return Response(
+            {"message": f"You have unfollowed {user_to_unfollow.username}"},
+            status=status.HTTP_200_OK,
+        )
