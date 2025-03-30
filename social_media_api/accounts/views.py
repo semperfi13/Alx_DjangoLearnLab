@@ -9,7 +9,6 @@ from django.contrib.auth.models import User
 from .serializers import UserRegistrationSerializer
 from rest_framework import permissions
 from django.contrib.auth import get_user_model
-from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
@@ -40,7 +39,7 @@ CustomUser = get_user_model()
 
 
 class FollowUserAPIView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
         try:
@@ -60,7 +59,7 @@ class FollowUserAPIView(generics.GenericAPIView):
 
 
 class UnfollowUserAPIView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
         try:
@@ -77,3 +76,14 @@ class UnfollowUserAPIView(generics.GenericAPIView):
             {"message": f"You have unfollowed {user_to_unfollow.username}"},
             status=status.HTTP_200_OK,
         )
+
+
+class UserListAPIView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        # Return a list of all users (except the current user)
+        users = CustomUser.objects.all().exclude(id=request.user.id)
+        usernames = [user.username for user in users]
+
+        return Response({"users": usernames}, status=status.HTTP_200_OK)
